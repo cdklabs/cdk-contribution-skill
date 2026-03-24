@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Kiro
+.kiro/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
