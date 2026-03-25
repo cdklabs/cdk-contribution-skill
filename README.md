@@ -69,7 +69,7 @@ A contributor acceleration tool that helps experienced developers move faster fr
     └─────────────┬─────────────┘
                   ▼
     ┌───────────────────────────┐
-    │     01 ISSUE ANALYST      │
+    │      ISSUE ANALYST        │
     │   Analyze issue & code    │
     └─────────────┬─────────────┘
                   │
@@ -78,7 +78,7 @@ A contributor acceleration tool that helps experienced developers move faster fr
     └─────────────┬─────────────┘
                   ▼
     ┌───────────────────────────┐
-    │   03 SOLUTION ARCHITECT   │
+    │    SOLUTION ARCHITECT     │
     │   Create impl plan        │
     └─────────────┬─────────────┘
                   ▼
@@ -93,7 +93,7 @@ A contributor acceleration tool that helps experienced developers move faster fr
     └─────────────┬─────────────┘
                   ▼
     ┌───────────────────────────┐
-    │  02 BUILD + 04 IMPLEMENT  │
+    │    BUILD + IMPLEMENT      │
     │  Setup env & write code   │
     └─────────────┬─────────────┘
                   │
@@ -171,18 +171,18 @@ Each deliverable includes ASCII diagrams summarizing key findings for that phase
 
 Detailed standard operating procedures are in `skill/references/`:
 
-| SOP | Purpose |
-|-----|---------|
-| `01-issue-analyst-sop.md` | Issue analysis and classification |
-| `02-build-engineer-sop.md` | Build environment setup |
-| `03-solution-architect-sop.md` | Solution design and planning |
-| `04-implementation-specialist-sop.md` | Code implementation |
-| `05-test-engineer-sop.md` | Unit and integration testing |
-| `06-quality-assurance-sop.md` | Lint, build, and quality checks |
-| `07-documentation-specialist-sop.md` | README and docs updates |
-| `08-security-reviewer-sop.md` | Security review |
-| `09-regression-reviewer-sop.md` | Regression review |
-| `10-review-report-generator-sop.md` | Final review report synthesis |
+| SOP | Phase | Purpose |
+|-----|-------|---------|
+| `issue-analyst-sop.md` | 1 – Analysis | Issue analysis and classification |
+| `solution-architect-sop.md` | 2 – Planning | Solution design and planning |
+| `build-engineer-sop.md` | 3 – Build & Impl | Build environment setup |
+| `implementation-specialist-sop.md` | 3 – Build & Impl | Code implementation |
+| `test-engineer-sop.md` | 4 – Validation | Unit and integration testing |
+| `quality-assurance-sop.md` | 4 – Validation | Lint, build, and quality checks |
+| `documentation-specialist-sop.md` | 4 – Validation | README and docs updates |
+| `security-reviewer-sop.md` | 5 – Self Review | Security review |
+| `regression-reviewer-sop.md` | 5 – Self Review | Regression review |
+| `review-report-generator-sop.md` | 5 – Self Review | Final review report synthesis |
 
 Supplementary references: `debug-ci.md`, `integ-testing.md`, `linting.md`
 
