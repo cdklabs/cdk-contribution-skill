@@ -165,9 +165,9 @@ git commit -m "feat(<module>): <description>"
 // ❌ WRONG - Cannot extend native Error class
 export class MyError extends Error { }
 
-// ✅ CORRECT - Use existing CDK error types
+// ✅ CORRECT - Use existing CDK error types (1st arg is an error code)
 import { UnscopedValidationError } from '../../core';
-throw new UnscopedValidationError('Clear error message with suggested fix');
+throw new UnscopedValidationError('InvalidPropValue', 'Clear error message with suggested fix');
 
 // ✅ CORRECT - For construct-specific errors
 import { ConstructError } from '../../core';
@@ -180,6 +180,7 @@ export class MyError extends ConstructError { }
 // Always provide actionable error messages
 if (!isValidInput(input)) {
   throw new UnscopedValidationError(
+    'InvalidInput',
     `Invalid input '${input}'. ${getValidationSuggestion(input)}`
   );
 }
@@ -192,6 +193,7 @@ if (!isValidInput(input)) {
 private validateProps(props: MyConstructProps): void {
   if (props.value < 0) {
     throw new UnscopedValidationError(
+      'NegativeValue',
       `'value' must be non-negative, got ${props.value}`
     );
   }
