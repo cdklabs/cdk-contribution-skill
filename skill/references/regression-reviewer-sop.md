@@ -145,13 +145,14 @@ Read available artifacts:
 - [ ] Error messages provide actionable guidance
 - [ ] Consistent with other validation in the same class
 - [ ] Test coverage for error messages with multiple constructs
-- [ ] Every `ValidationError` / `UnscopedValidationError` has an error code as the 1st argument (PascalCase)
+- [ ] Every `ValidationError` / `UnscopedValidationError` has an error code as the 1st argument, passed via the `lit` tagged template literal (PascalCase)
 
 **Red flags:**
 - Using `UnscopedValidationError` in construct validation
 - Error messages without construct path information
 - Generic errors that don't help identify which construct failed
 - Missing error code argument (old 1-arg / 2-arg signature)
+- Error code passed as a plain string instead of `` lit`Code` ``
 
 #### 7d. Exported Mutable Objects (see Appendix D for details)
 
@@ -260,14 +261,14 @@ import { Token } from 'aws-cdk-lib';
 
 public static connectionStringFromJson(template: string): SecretAttachmentTargetProps {
   if (Token.isUnresolved(template)) {
-    throw new UnscopedValidationError('TokenizedTemplateNotSupported',
+    throw new UnscopedValidationError(lit`TokenizedTemplateNotSupported`,
       'connectionStringFromJson does not support tokenized templates. ' +
       'Template must be a concrete string value at synthesis time.');
   }
   
   // Now safe to validate
   if (template.trim().length === 0) {
-    throw new UnscopedValidationError('EmptyTemplate', 'Template cannot be empty');
+    throw new UnscopedValidationError(lit`EmptyTemplate`, 'Template cannot be empty');
   }
   // ...
 }
@@ -316,7 +317,7 @@ public static connectionStringFromJson(template: string): SecretAttachmentTarget
   const pseudoParamPattern = /\$\{AWS::[a-zA-Z]+\}/;
   if (pseudoParamPattern.test(template)) {
     throw new UnscopedValidationError(
-      'PseudoParameterNotSupported',
+      lit`PseudoParameterNotSupported`,
       'connectionStringFromJson does not support CloudFormation pseudo-parameters ' +
       '(e.g., ${AWS::Region}, ${AWS::AccountId}). ' +
       'Template must only contain secret value placeholders like ${placeholder}. ' +
@@ -395,11 +396,12 @@ Generic errors without construct context make debugging difficult when users hav
 
 ```typescript
 import { ValidationError } from './private/validation';
+import { lit } from '../../core/lib/private/literal-string'; // adjust relative path
 
 // Option 1: Instance method
 public addConnectionString(template: string): void {
   if (template.trim().length === 0) {
-    throw new ValidationError('EmptyTemplate', 'Template cannot be empty', this);
+    throw new ValidationError(lit`EmptyTemplate`, 'Template cannot be empty', this);
   }
   // ...
 }
@@ -411,7 +413,7 @@ public static connectionStringFromJson(
 ): SecretAttachmentTargetProps {
   if (template.trim().length === 0) {
     throw new ValidationError(
-      'EmptyTemplate',
+      lit`EmptyTemplate`,
       'Template cannot be empty. Provide a JSON template with placeholders like {"host": "${host}"}',
       scope
     );
@@ -424,7 +426,7 @@ public static connectionStringFromJson(template: string): SecretAttachmentTarget
   return {
     bind: (scope: Construct) => {
       if (template.trim().length === 0) {
-        throw new ValidationError('EmptyTemplate', 'Template cannot be empty', scope);
+        throw new ValidationError(lit`EmptyTemplate`, 'Template cannot be empty', scope);
       }
       // ...
     }
