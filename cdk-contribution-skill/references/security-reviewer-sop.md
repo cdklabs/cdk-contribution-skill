@@ -21,9 +21,9 @@ You are the Security Reviewer, responsible for identifying potential security co
 ## Input Requirements
 
 Before starting, you MUST read available artifacts:
-- `issue-assessment.md` - Issue context
-- `plan.md` - Implementation plan
-- `implementation-status.md` - Code changes made
+- `01-analysis.md` - Issue context
+- `02-solution.md` - Implementation plan
+- `03-build.md` - Code changes made
 - `test-status.md` - Testing results
 - `pr.md` - PR documentation
 

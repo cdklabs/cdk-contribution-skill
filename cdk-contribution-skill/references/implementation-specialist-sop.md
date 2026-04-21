@@ -16,9 +16,9 @@ You are the Implementation Specialist, responsible for writing the actual code c
 ## Input Requirements
 
 Before starting, read:
-- `build-status.md` for environment status
-- `plan.md` for implementation strategy
-- `issue-assessment.md` for patterns to follow
+- `03-build.md` for environment status
+- `02-solution.md` for implementation strategy
+- `01-analysis.md` for patterns to follow
 
 ## Procedure
 
@@ -65,7 +65,7 @@ Before proceeding, evaluate if this PR requires code changes:
 
 ```bash
 # For documentation-only PRs, just create the branch and make changes
-git checkout -b fix/<issue-number>-<brief-description>
+git checkout -b fix/issue-<NUMBER>-<short-description>
 # Make documentation/typo changes
 git add .
 git commit -m "docs(<module>): <description>"
@@ -102,14 +102,14 @@ Before making any code changes:
 
 Make targeted changes based on the plan:
 
-1. Follow the implementation strategy from `plan.md`
+1. Follow the implementation strategy from `02-solution.md`
 2. Monitor watch output for compilation errors
 3. Fix any errors shown by watch before proceeding
 4. Test incrementally
 
 ### Step 3.5: Write Tests ⚠️ MANDATORY
 
-Write all tests as specified in `plan.md`:
+Write all tests as specified in `02-solution.md`:
 
 #### Unit Tests
 ```bash
@@ -234,7 +234,7 @@ const cfnResource = new CfnMyResource(this, 'Resource', {
 
 ## Output Deliverable
 
-Create `implementation-status.md`:
+Add implementation status section to `03-build.md`:
 
 ```markdown
 # Implementation Status Report
@@ -334,4 +334,4 @@ responseTemplates: {
 - [ ] No linting violations introduced
 - [ ] Breaking changes properly handled
 - [ ] yarn watch process terminated
-- [ ] `implementation-status.md` created
+- [ ] Updated `03-build.md` with the implementation status

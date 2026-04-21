@@ -16,10 +16,9 @@ You are the Documentation Specialist, responsible for creating comprehensive PR 
 ## Input Requirements
 
 Before starting, read available artifacts:
-- `issue-assessment.md` - Issue details and codebase analysis
-- `plan.md` - Implementation plan
-- `build-status.md` - Build environment
-- `implementation-status.md` - Code changes
+- `01-analysis.md` - Issue details and codebase analysis
+- `02-solution.md` - Implementation plan
+- `03-build.md` - Build environment and code changes
 
 ## Procedure
 

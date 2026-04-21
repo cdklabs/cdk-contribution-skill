@@ -39,7 +39,7 @@ git clean -fqdx -e .kiro
 git fetch upstream
 
 # Update local main branch with upstream changes
-git pull upstream main
+git rebase upstream/main
 ```
 
 If upstream remote not set up:
@@ -49,7 +49,7 @@ git remote add upstream https://github.com/aws/aws-cdk.git
 
 ### Step 3: Determine Branch Name
 
-Use standard format: `fix-<issue-number>`
+Use standard format: `fix/issue-<NUMBER>-<short-description>`
 
 Delete existing branch if it conflicts:
 ```bash
@@ -80,7 +80,7 @@ Confirm:
 
 ## Output Deliverable
 
-Create `build-status.md`:
+Create `03-build.md`:
 
 ```markdown
 # Build Environment Status
@@ -163,4 +163,4 @@ git reset --hard upstream/main
 - [ ] All dependencies installed successfully
 - [ ] Core modules built without errors
 - [ ] Environment ready for implementation
-- [ ] `build-status.md` created
+- [ ] `03-build.md` created

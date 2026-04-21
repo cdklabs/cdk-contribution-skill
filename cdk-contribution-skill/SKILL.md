@@ -162,7 +162,7 @@ Do NOT invoke them in parallel. Do NOT put them in the same subagent call.
 
 **Step A — Invoke Phase 1 subagent:**
 
-> Analyze the GitHub issue at <ISSUE_URL>.
+> Analyze the GitHub issue at <ISSUE_URL>. Follow the instructions in `references/issue-analyst-sop.md`.
 >
 > To fetch issue data, use the following priority order:
 >
@@ -282,11 +282,11 @@ Here's what I'm about to do:
 Kicking off now...
 ```
 
-Then proceed immediately without waiting for a response.
+Then proceed immediately without waiting for a response. Follow the instructions in `references/build-engineer-sop.md` for the build phase.
 
 Steps (in order, no skipping):
 
-1. Create a local PR branch named `fix/issue-<NUMBER>-<short-slug>` from current HEAD
+1. Create a local PR branch named `fix/issue-<NUMBER>-<short-description>` from current HEAD
 2. Sync with upstream main:
    - `git fetch upstream`
    - `git rebase upstream/main`
@@ -297,7 +297,7 @@ Steps (in order, no skipping):
    - If changes are purely in `.ts` source + tests with no codegen dependency, skip the build
      and go straight to implementation
    - Document the decision in `03-build.md`
-4. Implement all changes from the approved plan in `02-solution.md`
+4. Implement all changes from the approved plan in `02-solution.md`. Follow the instructions in `references/implementation-specialist-sop.md`.
 5. Write deliverable to `.kiro/contributions/<ISSUE_NUMBER>/03-build.md` (with ASCII diagram)
 
 ### Phase 4: Parallel Validation
@@ -333,14 +333,16 @@ Then proceed immediately without waiting for a response.
 
 Run all three as parallel subagents simultaneously. Do NOT wait for one to finish before starting the next.
 
-- TEST subagent:
+- TEST subagent: Follow the instructions in `references/test-engineer-sop.md`.
   - Run unit tests for all affected packages
   - Integ tests:
     1. Check if new or updated integ test files exist (compare against `02-solution.md` plan)
     2. If YES — run `yarn integ-runner --update-on-failed` on those files to deploy and regenerate snapshots
     3. If NO  — run `yarn integ-runner --update-on-failed` on the relevant module to confirm existing snapshots are intact and unchanged
-- QA checks (lint, build)
-- Documentation updates
+- QA checks (lint, build): Follow the instructions in `references/quality-assurance-sop.md`.
+- Documentation updates: Follow the instructions in `references/documentation-specialist-sop.md`.
+
+When all three subagents have succeeded, summarize the testing, QA and documentation update details in `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md`.
 
 ### Phase 5: Self Review
 
@@ -377,8 +379,10 @@ Kicking off now...
 Then proceed immediately without waiting for a response.
 
 Run both as parallel subagents simultaneously. Do NOT wait for one to finish before starting the next.
+Follow the instructions in `references/security-reviewer-sop.md` for the security review.
+Follow the instructions in `references/regression-reviewer-sop.md` for the regression review.
 
-Then synthesize findings into a go/no-go report and present to user before PR submission.
+Then follow the instructions in `references/review-report-generator-sop.md` to synthesize findings into a go/no-go report and present to user before PR submission.
 
 ### Phase 6: PR Submission
 
@@ -402,9 +406,21 @@ It MUST be the last line of the PR body. Do NOT omit it.
 - `gh` CLI (preferred for issue analysis) — `gh auth login` must be completed
 - GitHub MCP server (fallback if `gh` CLI is unavailable)
 
-## Reference Files
+## Reference SOPs
 
-Detailed SOPs available in `references/`:
-- Issue analysis, solution architecture, build, implementation
-- Testing, QA, documentation, security review, regression review
-- Supplementary skills: debug-ci, integ-testing, linting
+Detailed standard operating procedures are in `references/`:
+
+| SOP | Phase | Purpose |
+|-----|-------|---------|
+| `issue-analyst-sop.md` | 1 – Analysis | Issue analysis and classification |
+| `solution-architect-sop.md` | 2 – Planning | Solution design and planning |
+| `build-engineer-sop.md` | 3 – Build & Impl | Build environment setup |
+| `implementation-specialist-sop.md` | 3 – Build & Impl | Code implementation |
+| `test-engineer-sop.md` | 4 – Validation | Unit and integration testing |
+| `quality-assurance-sop.md` | 4 – Validation | Lint, build, and quality checks |
+| `documentation-specialist-sop.md` | 4 – Validation | README and docs updates |
+| `security-reviewer-sop.md` | 5 – Self Review | Security review |
+| `regression-reviewer-sop.md` | 5 – Self Review | Regression review |
+| `review-report-generator-sop.md` | 5 – Self Review | Final review report synthesis |
+
+Supplementary references: `debug-ci.md`, `integ-testing.md`, `linting.md`

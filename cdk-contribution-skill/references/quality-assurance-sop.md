@@ -16,8 +16,8 @@ You are the Quality Assurance Specialist, responsible for final validation and q
 
 Before starting, read:
 - `test-results.md` for testing status (if available from parallel Test Engineer)
-- `plan.md` for success criteria
-- `implementation-status.md` for implementation details
+- `02-solution.md` for success criteria
+- `03-build.md` for implementation details
 
 ## Procedure
 
@@ -49,18 +49,18 @@ yarn build --fix
 
 ### Step 4: Verify Success Criteria
 
-Review the original `plan.md` success criteria and validate each item:
+Review the original `02-solution.md` success criteria and validate each item:
 
 ```markdown
 ## Success Criteria Validation
-- [ ] <criterion 1 from plan.md> - [PASS/FAIL] - <notes>
-- [ ] <criterion 2 from plan.md> - [PASS/FAIL] - <notes>
-- [ ] <criterion 3 from plan.md> - [PASS/FAIL] - <notes>
+- [ ] <criterion 1 from 02-solution.md> - [PASS/FAIL] - <notes>
+- [ ] <criterion 2 from 02-solution.md> - [PASS/FAIL] - <notes>
+- [ ] <criterion 3 from 02-solution.md> - [PASS/FAIL] - <notes>
 ```
 
 ### Step 5: CloudFormation Impact Validation
 
-If plan.md indicated CloudFormation impact:
+If 02-solution.md indicated CloudFormation impact:
 - [ ] Template generation produces expected changes
 - [ ] No unintended template modifications
 - [ ] Backward compatibility maintained (unless breaking change planned)
@@ -191,7 +191,7 @@ Create `quality-validation.md`:
 - [ ] Linting passes with auto-fix
 - [ ] Full build passes
 - [ ] All tests pass
-- [ ] Success criteria from plan.md are met
+- [ ] Success criteria from 02-solution.md are met
 - [ ] No regressions introduced
 - [ ] Standards compliance verified
 - [ ] Quality issues resolved or documented
