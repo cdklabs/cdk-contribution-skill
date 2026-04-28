@@ -369,6 +369,19 @@ Run both as parallel subagents simultaneously. Do NOT wait for one to finish bef
 
 Then synthesize findings into a go/no-go report and present to user before PR submission.
 
+### Phase 6: PR Submission
+
+After the user approves the go/no-go report, commit and create the PR.
+
+**MANDATORY**: Every PR description body MUST end with this marker line:
+
+```
+[comment]: <> (by cdk-contribution-skill)
+```
+
+This is a hidden Markdown comment that identifies PRs created via this workflow.
+It MUST be the last line of the PR body. Do NOT omit it.
+
 ---
 
 ## Prerequisites
