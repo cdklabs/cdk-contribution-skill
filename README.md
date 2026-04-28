@@ -188,10 +188,27 @@ Supplementary references: `debug-ci.md`, `integ-testing.md`, `linting.md`
 
 ## Getting Started
 
-1. Install the CDK Contribution Skill in Kiro
-2. Point the skill at a CDK GitHub issue
-3. Review and approve the implementation plan
-4. Review the final output and submit your PR
+### Install the Skill
+
+**Kiro IDE**
+
+1. Open **Agent Steering & Skills** in the Kiro panel
+2. Click **+** → **Import a skill**
+3. Select **GitHub** and paste: `https://github.com/cdklabs/cdk-contribution-skill/tree/main/cdk-contribution-skill`
+
+**Kiro CLI**
+
+Ask Kiro to install it:
+
+```
+Install https://github.com/cdklabs/cdk-contribution-skill to my Kiro skills
+```
+
+### Use the Skill
+
+1. Point the skill at a CDK GitHub issue
+2. Review and approve the implementation plan
+3. Review the final output and submit your PR
 
 ## Prerequisites
 
