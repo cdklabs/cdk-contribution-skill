@@ -101,7 +101,7 @@ I'll guide you through a structured process with human approval gates:
      +-------------------------------+
 
 Key Points:
-- Phases 1 and 2 run as subagents automatically after you say yes
+- Phase 1 (Analysis) runs first, then Phase 2 (Planning) runs after — sequential, not parallel
 - You review and approve the plan before any code is written
 - I pause for your input at critical decision points
 
@@ -157,7 +157,10 @@ Use plain ASCII box-and-arrow style. No emoji. Example:
 
 ### When user says "Yes" to start:
 
-**Immediately** invoke Phase 1 as a subagent with this task:
+IMPORTANT: Phase 1 and Phase 2 are SEQUENTIAL — Phase 2 depends on Phase 1's output.
+Do NOT invoke them in parallel. Do NOT put them in the same subagent call.
+
+**Step A — Invoke Phase 1 subagent:**
 
 > Analyze the GitHub issue at <ISSUE_URL>.
 >
@@ -178,15 +181,23 @@ Use plain ASCII box-and-arrow style. No emoji. Example:
 >
 > Write your full analysis to `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md` before returning.
 
-Then, **without pausing**, invoke Phase 2 as a subagent with the Phase 1 output as context:
+**Step B — WAIT for Phase 1 to complete, then read its output:**
 
-> Using the analysis in `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md`, propose a concrete
-> solution for the CDK contribution. Include: the implementation approach, which files need to
-> change and how, required unit tests (what to test and why), required integ tests (which integ
-> test file, what scenario to cover), and any breaking change considerations. Be specific about
-> CDK patterns to follow.
+Read `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md` to confirm it was written successfully.
+
+**Step C — Only AFTER Phase 1 is complete, invoke Phase 2 subagent:**
+
+Pass the content of `01-analysis.md` as `relevant_context` to the Phase 2 subagent:
+
+> Using the analysis provided in the context, propose a concrete solution for the CDK
+> contribution. Include: the implementation approach, which files need to change and how,
+> required unit tests (what to test and why), required integ tests (which integ test file,
+> what scenario to cover), and any breaking change considerations. Be specific about CDK
+> patterns to follow.
 >
 > Write your full proposal to `.kiro/contributions/<ISSUE_NUMBER>/02-solution.md` before returning.
+
+Do NOT ask the user for input between Phase 1 and Phase 2 — proceed automatically.
 
 ---
 
