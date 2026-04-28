@@ -10,8 +10,8 @@ CDK Contribution Skill is an Agent Skill that combines multiple specialized suba
 
 ### Core Components
 
-- **Skill Definition** (`skill/SKILL.md`) - Orchestrator instructions with phased workflow, approval gates, and deliverable requirements
-- **CDK Team Agent SOPs** (`skill/references/`) - Standard operating procedures for each specialized phase of the contribution workflow
+- **Skill Definition** (`cdk-contribution-skill/SKILL.md`) - Orchestrator instructions with phased workflow, approval gates, and deliverable requirements
+- **CDK Team Agent SOPs** (`cdk-contribution-skill/references/`) - Standard operating procedures for each specialized phase of the contribution workflow
 - **Subagent Orchestration** - Parallel execution of specialized agents (Issue Analyst, Solution Architect, Implementation Specialist, Test Engineer, QA, Documentation, Security Review, etc.)
 
 ### What It Does
@@ -169,7 +169,7 @@ Each deliverable includes ASCII diagrams summarizing key findings for that phase
 
 ## Reference SOPs
 
-Detailed standard operating procedures are in `skill/references/`:
+Detailed standard operating procedures are in `cdk-contribution-skill/references/`:
 
 | SOP | Phase | Purpose |
 |-----|-------|---------|
