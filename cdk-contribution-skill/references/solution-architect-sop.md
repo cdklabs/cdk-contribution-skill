@@ -13,6 +13,10 @@ You are the Solution Architect, responsible for creating comprehensive implement
 - Identify risks and mitigation strategies
 - Present plan for human approval before build/implementation begins
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
@@ -147,23 +151,7 @@ Analyze each dimension:
 **Final Assessment**: **Breaking Change: [Yes/No]**
 
 **If Breaking Change Detected:**
-⚠️ **STOP - Breaking changes require special handling:**
-
-1. **Feature Flag Required**: Introduce a feature flag to protect existing workloads
-   - New behavior behind feature flag (opt-in)
-   - Old behavior remains default (preserves BC)
-   - Document migration path for users to adopt new behavior
-   
-2. **Feature Flag Design:**
-   - Flag name: `@aws-cdk/<module>:<feature-name>`
-   - Default value: `false` (preserves existing behavior)
-   - Documentation: Clear explanation of old vs new behavior
-   
-3. **Migration Requirements:**
-   - Migration path documented
-   - Deprecation timeline (if applicable)
-   - User communication plan
-   - Examples showing before/after with feature flag
+⚠️ **STOP** — See `AGENTS.md § Feature Flags` for implementation requirements.
 
 **Regression Prevention Checklist:**
 - [ ] Existing unit tests still pass without modifications
@@ -424,20 +412,12 @@ Provide an ASCII diagram illustrating the proposed solution:
 **If Breaking Change = Yes:**
 
 ### Feature Flag Implementation Required
-- **Feature Flag Name**: `@aws-cdk/<module>:<feature-name>`
-- **Default Value**: `false` (preserves existing behavior)
-- **New Behavior**: Only active when flag is `true` (opt-in)
-- **Rationale**: Protects existing deployed workloads from breaking changes on CDK upgrade
+See `AGENTS.md § Feature Flags` for naming, defaults, and implementation pattern.
 
 ### Backward Compatibility Strategy
 - **Old Behavior (default)**: <describe existing behavior that will be preserved>
 - **New Behavior (opt-in)**: <describe new behavior behind feature flag>
 - **Migration Path**: <how users can safely adopt new behavior>
-
-**Regression Prevention:**
-- [ ] Existing unit tests pass without modification
-- [ ] Integration tests verify no template changes for existing code
-- [ ] Default behavior unchanged
 - [ ] Feature flag properly isolates new behavior
 
 ## Implementation Strategy
@@ -456,21 +436,7 @@ Provide an ASCII diagram illustrating the proposed solution:
 <API design decisions and rationale>
 
 ### Feature Flag Implementation (if Breaking Change)
-**If Breaking Change = Yes, this section is REQUIRED:**
-
-- **Feature Flag Name**: `@aws-cdk/<module>:<feature-name>`
-- **Default Value**: `false` (preserves existing behavior)
-- **Implementation Location**: <file path where flag is checked>
-- **Behavior When Disabled (default)**: <existing behavior preserved>
-- **Behavior When Enabled (opt-in)**: <new behavior activated>
-- **Flag Check Pattern**:
-  ```typescript
-  if (FeatureFlags.of(this).isEnabled(cxapi.FEATURE_FLAG_NAME)) {
-    // New behavior
-  } else {
-    // Existing behavior (default)
-  }
-  ```
+See `AGENTS.md § Feature Flags` for flag naming, check pattern, and implementation details.
 
 ### Error Handling
 <error handling approach>
@@ -523,17 +489,7 @@ Provide an ASCII diagram illustrating the proposed solution:
 - **Behavior**: <new behavior description>
 
 ### Migration Steps for Users
-1. **Test with Feature Flag**: Enable flag in cdk.json for testing
-   ```json
-   {
-     "context": {
-       "@aws-cdk/<module>:<feature-name>": true
-     }
-   }
-   ```
-2. **Validate Changes**: Review CloudFormation template diff
-3. **Deploy to Non-Production**: Test in staging environment
-4. **Deploy to Production**: Roll out with confidence
+See `AGENTS.md § Feature Flags` for the cdk.json context pattern and migration approach.
 
 ### Deprecation Timeline
 - **Current Release**: New behavior available behind feature flag

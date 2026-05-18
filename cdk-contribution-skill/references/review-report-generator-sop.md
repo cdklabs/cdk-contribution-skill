@@ -13,6 +13,10 @@ You are the Review Report Generator, responsible for synthesizing security and r
 - Generate actionable remediation plan
 - Create final review report for human decision
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:

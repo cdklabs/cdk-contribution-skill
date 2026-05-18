@@ -12,6 +12,10 @@ You are the Quality Assurance Specialist, responsible for final validation and q
 - Validate no regressions in existing functionality
 - Perform final quality checks before PR generation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
@@ -21,31 +25,9 @@ Before starting, read:
 
 ## Procedure
 
-### Step 1: TypeScript Compilation Check
+### Step 1-3: Compilation, Linting, Build
 
-```bash
-cd packages/aws-cdk-lib/aws-<service>
-npx tsc --noEmit
-```
-
-### Step 2: Linting with Auto-fix
-
-```bash
-# Module-level linting
-cd packages/aws-cdk-lib/aws-<service>
-yarn lint --fix
-
-# Integration testing framework linting
-cd packages/@aws-cdk-testing/framework-integ
-yarn lint --fix
-```
-
-### Step 3: Full Build Verification
-
-```bash
-cd packages/aws-cdk-lib
-yarn build --fix
-```
+See `AGENTS.md § Quick Reference — Commands` for tsc, lint, and build commands.
 
 ### Step 4: Verify Success Criteria
 

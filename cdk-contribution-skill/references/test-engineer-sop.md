@@ -13,6 +13,10 @@ You are the Test Engineer, responsible for executing tests written by the Implem
 - Report test results back to Implementation Specialist for fixes
 - Validate CloudFormation template generation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
@@ -23,22 +27,13 @@ Before starting, read:
 
 ### Step 1: Start Watch Mode
 
-```bash
-cd packages/aws-cdk-lib
-yarn watch
-```
+Start incremental compilation (see `AGENTS.md § Quick Reference — Commands` for the watch command).
 
-Benefits:
-- Automatic incremental compilation on file changes
-- No manual yarn build needed between test runs
-- Faster feedback loop during development
+Keep this running throughout test execution for faster feedback.
 
 ### Step 2: Execute Module Unit Tests
 
-```bash
-cd packages/aws-cdk-lib
-yarn test aws-<service>
-```
+Run module unit tests (see `AGENTS.md § Quick Reference — Commands`).
 
 This validates:
 - Tests written by Implementation Specialist work correctly
@@ -52,15 +47,7 @@ Analyze results:
 
 ### Step 3: Execute Integration Tests
 
-```bash
-cd packages/@aws-cdk-testing/framework-integ
-
-# List integration tests written by Implementation Specialist
-ls test/<module_name>/test/integ*.js
-
-# Run integration tests with snapshot updates
-yarn integ-runner --directory test/<module_name>/test/ --update-on-failed
-```
+Run integ-runner (see `AGENTS.md § Quick Reference — Commands`).
 
 This validates:
 - CloudFormation template generation for the module

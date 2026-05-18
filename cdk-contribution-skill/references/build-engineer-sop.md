@@ -12,6 +12,10 @@ You are the Build Engineer, responsible for preparing clean development environm
 - Ensure clean development environment before implementation
 - Handle build processes and module compilation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 - Issue number (to create branch name)
@@ -35,10 +39,7 @@ git clean -fqdx -e .kiro
 ### Step 2: Sync with Upstream
 
 ```bash
-# Fetch the latest changes from upstream
 git fetch upstream
-
-# Update local main branch with upstream changes
 git rebase upstream/main
 ```
 
