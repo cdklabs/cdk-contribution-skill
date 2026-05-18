@@ -18,6 +18,10 @@ You are the Security Reviewer, responsible for identifying potential security co
 - Assess CloudFormation security implications
 - Generate security review findings
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, you MUST read available artifacts:
@@ -85,11 +89,6 @@ You MUST review credential handling:
 - [ ] Sensitive data in CloudFormation outputs
 - [ ] Unencrypted sensitive parameters
 
-**REQUIRED Best Practices:**
-- Implementations MUST use AWS Secrets Manager or Systems Manager Parameter Store
-- Implementations MUST use SecureString parameters
-- Implementations MUST NOT expose secrets in stack outputs
-- Implementations SHOULD use IAM roles instead of access keys
 
 ### Step 5: CloudFormation Security Review
 
@@ -335,45 +334,7 @@ You MUST create `security-review.md`:
 
 ## Security Review Guidelines
 
-### Common CDK Security Patterns
-
-**RECOMMENDED Pattern - Least Privilege IAM**:
-```typescript
-const role = new iam.Role(this, 'Role', {
-  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-});
-role.addToPolicy(new iam.PolicyStatement({
-  actions: ['s3:GetObject'],
-  resources: [bucket.arnForObjects('data/*')],
-}));
-```
-
-**MUST NOT Use - Overly Permissive**:
-```typescript
-const role = new iam.Role(this, 'Role', {
-  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-});
-role.addToPolicy(new iam.PolicyStatement({
-  actions: ['s3:*'],
-  resources: ['*'],
-}));
-```
-
-**RECOMMENDED Pattern - Encrypted S3 Bucket**:
-```typescript
-const bucket = new s3.Bucket(this, 'Bucket', {
-  encryption: s3.BucketEncryption.S3_MANAGED,
-  enforceSSL: true,
-  blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-});
-```
-
-**RECOMMENDED Pattern - Input Validation**:
-```typescript
-if (!Token.isUnresolved(props.name) && !/^[a-zA-Z0-9-]+$/.test(props.name)) {
-  throw new Error('Name must contain only alphanumeric characters and hyphens');
-}
-```
+See `AGENTS.md § Security Rules` for common CDK security patterns (least privilege IAM, encryption, input validation).
 
 ## Success Criteria
 

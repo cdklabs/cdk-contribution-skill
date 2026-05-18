@@ -7,6 +7,8 @@ description: Guide AWS CDK contributions from GitHub issue analysis to PR-ready 
 
 Orchestrates specialized phases for AWS CDK contributions with human approval gates.
 
+**Global Prerequisite**: All phases MUST read the relevant sections of `AGENTS.md` (at aws-cdk repo root) before executing. It defines construct design, naming, props, security, error handling, and testing standards.
+
 ## MANDATORY: Present Workflow Overview FIRST
 
 BEFORE doing ANY work, you MUST present the ASCII workflow diagram below, explain the process,

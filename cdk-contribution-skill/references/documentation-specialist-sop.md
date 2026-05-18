@@ -13,6 +13,10 @@ You are the Documentation Specialist, responsible for creating comprehensive PR 
 - Write clear technical explanations for reviewers
 - Ensure proper conventional commit formatting
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read available artifacts:

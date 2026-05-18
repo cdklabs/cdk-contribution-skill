@@ -13,6 +13,10 @@ You are the Implementation Specialist, responsible for writing the actual code c
 - Implement features/fixes according to the solution architect's plan
 - Handle TypeScript, API design, and CloudFormation template generation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
@@ -78,11 +82,7 @@ git commit -m "docs(<module>): <description>"
 
 ### Step 1: Start Watch Mode ⚠️ CRITICAL
 
-```bash
-# Start incremental compilation in background
-cd packages/aws-cdk-lib
-yarn watch
-```
+Start incremental compilation (see `AGENTS.md § Quick Reference — Commands`).
 
 Keep this running throughout implementation. It will:
 - Incrementally compile TypeScript changes
@@ -137,18 +137,7 @@ Write all tests as specified in `02-solution.md`:
 
 ### Step 4: Verify Implementation
 
-```bash
-# Verify watch mode shows no errors
-# Check the yarn watch output
-
-# Run linting
-cd packages/aws-cdk-lib/aws-<service>
-yarn lint --fix
-
-# Run all unit tests for the module
-cd packages/aws-cdk-lib
-yarn test aws-<service>
-```
+Run lint and unit tests (see `AGENTS.md § Quick Reference — Commands`).
 
 ### Step 5: Commit Changes
 
@@ -157,80 +146,9 @@ git add .
 git commit -m "feat(<module>): <description>"
 ```
 
-## CDK Implementation Standards
+## CDK Standards Reference
 
-### JSII Compatibility ⚠️ CRITICAL
-
-```typescript
-// ❌ WRONG - Cannot extend native Error class
-export class MyError extends Error { }
-
-// ✅ CORRECT - Use existing CDK error types (1st arg is an error code via `lit` tag)
-import { UnscopedValidationError } from '../../core';
-import { lit } from '../../core/lib/private/literal-string';
-throw new UnscopedValidationError(lit`InvalidPropValue`, 'Clear error message with suggested fix');
-
-// ✅ CORRECT - For construct-specific errors
-import { ConstructError } from '../../core';
-export class MyError extends ConstructError { }
-```
-
-### Error Handling Patterns
-
-```typescript
-// Always provide actionable error messages
-if (!isValidInput(input)) {
-  throw new UnscopedValidationError(
-    lit`InvalidInput`,
-    `Invalid input '${input}'. ${getValidationSuggestion(input)}`
-  );
-}
-```
-
-### Validation Implementation
-
-```typescript
-// Follow this pattern for input validation
-private validateProps(props: MyConstructProps): void {
-  if (props.value < 0) {
-    throw new UnscopedValidationError(
-      lit`NegativeValue`,
-      `'value' must be non-negative, got ${props.value}`
-    );
-  }
-}
-```
-
-### API Design Patterns
-
-```typescript
-// Props interface pattern
-export interface MyConstructProps {
-  /**
-   * Description of the property.
-   * @default - default value description
-   */
-  readonly propertyName?: string;
-}
-
-// Construct pattern
-export class MyConstruct extends Construct {
-  constructor(scope: Construct, id: string, props: MyConstructProps) {
-    super(scope, id);
-    this.validateProps(props);
-    // Implementation
-  }
-}
-```
-
-### CloudFormation Generation
-
-```typescript
-// Use CfnResource for CloudFormation mapping
-const cfnResource = new CfnMyResource(this, 'Resource', {
-  propertyName: props.propertyName,
-});
-```
+See `AGENTS.md § Implementation Patterns` for JSII compatibility, error handling, validation, API design, and CloudFormation generation patterns.
 
 ## Output Deliverable
 

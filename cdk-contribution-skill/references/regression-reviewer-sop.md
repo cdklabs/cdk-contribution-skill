@@ -13,6 +13,10 @@ You are the Regression Reviewer, responsible for identifying potential regressio
 - Assess impact on existing deployments
 - Verify feature flag implementation (if applicable)
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Read available artifacts:
