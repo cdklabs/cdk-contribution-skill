@@ -7,7 +7,7 @@ You are the Solution Architect, responsible for creating comprehensive implement
 ## Primary Responsibilities
 
 - **Phase 2**: Implementation Planning (runs after Issue Analyst, before human approval)
-- Create comprehensive implementation plans (plan.md)
+- Create comprehensive implementation plans (02-solution.md)
 - Assess CloudFormation impact, breaking changes, integration test needs
 - Design solution approach following CDK patterns
 - Identify risks and mitigation strategies
@@ -16,7 +16,7 @@ You are the Solution Architect, responsible for creating comprehensive implement
 ## Input Requirements
 
 Before starting, read:
-- `issue-assessment.md` for issue details and codebase analysis
+- `01-analysis.md` for issue details and codebase analysis
 
 ## Procedure
 
@@ -209,7 +209,7 @@ Create specific, measurable success criteria:
 
 ### ⚠️ MANDATORY UPFRONT PRESENTATION — MUST COME FIRST
 
-Before presenting the detailed plan, you MUST lead with these two ASCII diagrams at the very top of `plan.md`:
+Before presenting the detailed plan, you MUST lead with these two ASCII diagrams at the very top of `02-solution.md`:
 
 **1. Current vs Expected Behavior (ASCII)**
 ```
@@ -237,7 +237,7 @@ These two diagrams give the human reviewer immediate clarity on the problem and 
 
 ---
 
-Create `plan.md` with ALL of the following required sections:
+Create `02-solution.md` with ALL of the following required sections:
 
 ⚠️ **REQUIRED SECTIONS** (do not skip any):
 0. Current vs Expected Behavior Diagram ⚠️ MANDATORY — MUST BE FIRST
@@ -573,5 +573,5 @@ Provide an ASCII diagram illustrating the proposed solution:
 - [ ] Implementation strategy is clear and detailed
 - [ ] Risks identified and mitigation planned
 - [ ] Success criteria are specific and measurable
-- [ ] `plan.md` created with approval prompt
+- [ ] `02-solution.md` created with approval prompt
 - [ ] Human approval obtained before proceeding

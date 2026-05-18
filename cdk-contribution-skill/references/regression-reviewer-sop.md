@@ -16,9 +16,9 @@ You are the Regression Reviewer, responsible for identifying potential regressio
 ## Input Requirements
 
 Read available artifacts:
-- `issue-assessment.md` - Issue context
-- `plan.md` - Implementation plan (includes Breaking Change Analysis)
-- `implementation-status.md` - Code changes made
+- `01-analysis.md` - Issue context
+- `02-solution.md` - Implementation plan (includes Breaking Change Analysis)
+- `03-build.md` - Code changes made
 - `test-status.md` - Testing results
 - `pr.md` - PR documentation
 

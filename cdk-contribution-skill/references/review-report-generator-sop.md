@@ -19,8 +19,8 @@ Before starting, read:
 - `security-review.md` - Security review findings
 - `regression-review.md` - Regression review findings
 - `pr.md` - PR documentation
-- `plan.md` - Implementation plan
-- `implementation-status.md` - Implementation details
+- `02-solution.md` - Implementation plan
+- `03-build.md` - Implementation details
 
 ## Procedure
 
@@ -68,7 +68,7 @@ Determine recommendation:
 
 ## Output Deliverable
 
-Create `review-report.md`:
+Create `05-review.md`:
 
 ```markdown
 # Final Self-Review Report
@@ -354,7 +354,7 @@ Create `review-report.md`:
 
 - **Security Review**: `security-review.md`
 - **Regression Review**: `regression-review.md`
-- **Implementation Plan**: `plan.md`
+- **Implementation Plan**: `02-solution.md`
 - **PR Documentation**: `pr.md`
 
 ---
@@ -451,7 +451,7 @@ LOW + LOW = LOW
 - [ ] Risk assessment completed
 - [ ] Final decision made with clear justification
 - [ ] Next steps clearly outlined
-- [ ] `review-report.md` created
+- [ ] `05-review.md` created
 - [ ] Ready for human decision
 
 ## Critical Reminders

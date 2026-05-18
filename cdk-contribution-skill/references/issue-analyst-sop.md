@@ -133,7 +133,7 @@ Based on analysis, decide:
 
 ## Output Deliverable
 
-Create `issue-assessment.md`:
+Create `01-analysis.md`:
 
 ```markdown
 # Issue Assessment Report
@@ -264,4 +264,4 @@ packages/aws-cdk-lib/aws-<service>/
 - [ ] Implementation approach recommended
 - [ ] Potential pitfalls identified
 - [ ] Decision justified with reasoning
-- [ ] `issue-assessment.md` created
+- [ ] `01-analysis.md` created

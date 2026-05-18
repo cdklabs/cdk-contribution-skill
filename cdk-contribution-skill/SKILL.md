@@ -112,19 +112,44 @@ STOP and wait for user response. Do NOT proceed until the user confirms.
 
 ---
 
+## Reference Files
+
+**CRITICAL**: The reference files in the `references/` folder define the exact structure and content
+of each deliverable per phase. You MUST read the relevant reference file BEFORE executing each phase:
+
+| SOP | Phase | Purpose |
+|-----|-------|---------|
+| `issue-analyst-sop.md` | 1 – Analysis | Issue analysis and classification |
+| `solution-architect-sop.md` | 2 – Planning | Solution design and planning |
+| `build-engineer-sop.md` | 3 – Build & Impl | Build environment setup |
+| `implementation-specialist-sop.md` | 3 – Build & Impl | Code implementation |
+| `test-engineer-sop.md` | 4 – Validation | Unit and integration testing |
+| `quality-assurance-sop.md` | 4 – Validation | Lint, build, and quality checks |
+| `documentation-specialist-sop.md` | 4 – Validation | README and docs updates |
+| `security-reviewer-sop.md` | 5 – Self Review | Security review |
+| `regression-reviewer-sop.md` | 5 – Self Review | Regression review |
+| `review-report-generator-sop.md` | 5 – Self Review | Final review report synthesis |
+
+Supplementary references: `debug-ci.md`, `integ-testing.md`
+
 ## Deliverables
 
-Each phase MUST write its output to a markdown file under `.kiro/contributions/<ISSUE_NUMBER>/`:
+Each phase MUST write its output to markdown files under `.kiro/contributions/<ISSUE_NUMBER>/`:
 
-| Phase   | Output file                                           |
-|---------|-------------------------------------------------------|
-| Phase 1 | `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md`   |
-| Phase 2 | `.kiro/contributions/<ISSUE_NUMBER>/02-solution.md`   |
-| Phase 3 | `.kiro/contributions/<ISSUE_NUMBER>/03-build.md`      |
-| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md` |
-| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/05-review.md`     |
+| Phase   | Output file                                                    |
+|---------|----------------------------------------------------------------|
+| Phase 1 | `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md`            |
+| Phase 2 | `.kiro/contributions/<ISSUE_NUMBER>/02-solution.md`            |
+| Phase 3 | `.kiro/contributions/<ISSUE_NUMBER>/03-build.md`               |
+| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/test-results.md`           |
+| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/quality-validation.md`     |
+| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/pr.md`                     |
+| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md`          |
+| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/security-review.md`        |
+| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/regression-review.md`      |
+| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/05-review.md`              |
 
-The subagent for each phase is responsible for writing its own deliverable file before returning.
+The subagent for each phase is responsible for writing its own deliverable file(s) before returning.
 The orchestrator reads the file as the handoff input to the next phase.
 
 ### Deliverable ASCII Diagram Requirement
@@ -162,6 +187,9 @@ Do NOT invoke them in parallel. Do NOT put them in the same subagent call.
 
 **Step A — Invoke Phase 1 subagent:**
 
+> **MANDATORY PRE-READ: Before executing this phase, you MUST read the instructions in `references/issue-analyst-sop.md`**
+> **Do NOT proceed until you have read the file and understand the required deliverables.**
+>
 > Analyze the GitHub issue at <ISSUE_URL>.
 >
 > To fetch issue data, use the following priority order:
@@ -189,6 +217,9 @@ Read `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md` to confirm it was writt
 
 Pass the content of `01-analysis.md` as `relevant_context` to the Phase 2 subagent:
 
+> **MANDATORY PRE-READ: Before executing this phase, you MUST read the instructions in `references/solution-architect-sop.md`**
+> **Do NOT proceed until you have read the file and understand the required deliverables.**
+>
 > Using the analysis provided in the context, propose a concrete solution for the CDK
 > contribution. Include: the implementation approach, which files need to change and how,
 > required unit tests (what to test and why), required integ tests (which integ test file,
@@ -266,6 +297,16 @@ Continue with this plan? Yes | No | Something Else
 
 ### Phase 3: Build & Implementation
 
+**STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
+
+You MUST read BOTH of these files before ANY other action in this phase:
+1. `references/build-engineer-sop.md` - provides instructions for the build phase
+2. `references/implementation-specialist-sop.md` - provides instructions for the implementation phase
+
+After reading, confirm you understand the required deliverables and procedures.
+
+**STEP 1**
+
 Before doing anything, present this summary to the user:
 
 ```text
@@ -286,7 +327,7 @@ Then proceed immediately without waiting for a response.
 
 Steps (in order, no skipping):
 
-1. Create a local PR branch named `fix/issue-<NUMBER>-<short-slug>` from current HEAD
+1. Create a local PR branch named `fix/issue-<NUMBER>-<short-description>` from current HEAD
 2. Sync with upstream main:
    - `git fetch upstream`
    - `git rebase upstream/main`
@@ -297,10 +338,21 @@ Steps (in order, no skipping):
    - If changes are purely in `.ts` source + tests with no codegen dependency, skip the build
      and go straight to implementation
    - Document the decision in `03-build.md`
-4. Implement all changes from the approved plan in `02-solution.md`
+4. Implement all changes from the approved plan in `02-solution.md`.
 5. Write deliverable to `.kiro/contributions/<ISSUE_NUMBER>/03-build.md` (with ASCII diagram)
 
 ### Phase 4: Parallel Validation
+
+**STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
+
+You MUST read ALL THREE of these files before ANY other action in this phase:
+1. `references/test-engineer-sop.md` - provides instructions for the testing subagent. Required deliverable: `test-results.md`.
+2. `references/quality-assurance-sop.md` - provides instructions for the QA subagent. Required deliverable: `quality-validation.md`
+3. `references/documentation-specialist-sop.md` - provides instructions for the documentation subagent. Required deliverable: `pr.md`
+
+After reading, confirm you understand the required deliverables and procedures.
+
+**STEP 1**
 
 Before doing anything, present this summary to the user:
 
@@ -342,7 +394,20 @@ Run all three as parallel subagents simultaneously. Do NOT wait for one to finis
 - QA checks (lint, build)
 - Documentation updates
 
+When all three subagents have succeeded, summarize the testing, QA and documentation details in `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md`.
+
 ### Phase 5: Self Review
+
+**STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
+
+You MUST read ALL THREE of these files before ANY other action in this phase:
+1. `references/security-reviewer-sop.md` - provides instructions for the security review subagent. Required deliverable: `security-review.md`.
+2. `references/regression-reviewer-sop.md` - provides instructions for the regression review subagent. Required deliverable: `regression-review.md`
+3. `references/review-report-generator-sop.md` - provides instructions for creating the final review report. Required deliverable: `05-review.md`
+
+After reading, confirm you understand the required deliverables and procedures.
+
+**STEP 1**
 
 Before doing anything, present this summary to the user:
 
@@ -378,7 +443,7 @@ Then proceed immediately without waiting for a response.
 
 Run both as parallel subagents simultaneously. Do NOT wait for one to finish before starting the next.
 
-Then synthesize findings into a go/no-go report and present to user before PR submission.
+Synthesize findings into a go/no-go report in `.kiro/contributions/<ISSUE_NUMBER>/05-review.md` and present to user before PR submission.
 
 ### Phase 6: PR Submission
 
@@ -401,10 +466,3 @@ It MUST be the last line of the PR body. Do NOT omit it.
 - Node.js v18+, Yarn
 - `gh` CLI (preferred for issue analysis) — `gh auth login` must be completed
 - GitHub MCP server (fallback if `gh` CLI is unavailable)
-
-## Reference Files
-
-Detailed SOPs available in `references/`:
-- Issue analysis, solution architecture, build, implementation
-- Testing, QA, documentation, security review, regression review
-- Supplementary skills: debug-ci, integ-testing, linting

@@ -16,54 +16,8 @@ You are the Test Engineer, responsible for executing tests written by the Implem
 ## Input Requirements
 
 Before starting, read:
-- `implementation-status.md` for code changes and tests written
-- `plan.md` for testing requirements
-
-## Default Testing Strategy ⚠️ MANDATORY
-
-The Test Engineer executes tests and provides feedback in a 2-phase approach:
-
-### Phase 0: Start Incremental Compilation ⚠️ CRITICAL
-
-```bash
-# Start yarn watch for incremental compilation
-cd packages/aws-cdk-lib
-yarn watch
-```
-
-Benefits:
-- Automatic incremental compilation on file changes
-- No manual yarn build needed between test runs
-- Faster feedback loop during development
-
-### Phase 1: Execute Module Unit Tests ⚠️ MANDATORY
-
-```bash
-# Run unit tests for the specific module
-cd packages/aws-cdk-lib
-yarn test aws-<service>
-```
-
-This validates:
-- Tests written by Implementation Specialist work correctly
-- Module-specific functionality behaves as expected
-- Module dependencies are intact
-
-### Phase 2: Execute Module Integration Tests ⚠️ MANDATORY
-
-```bash
-# Check integration tests written by Implementation Specialist
-cd packages/@aws-cdk-testing/framework-integ
-ls test/<module_name>/test/integ*.js
-
-# Run integration tests for the module
-yarn integ-runner --directory test/<module_name>/test/ --update-on-failed
-```
-
-This validates:
-- CloudFormation template generation for the module
-- AWS service integration for the module
-- Module-specific deployment scenarios
+- `03-build.md` for code changes and tests written
+- `02-solution.md` for testing requirements
 
 ## Procedure
 
@@ -74,12 +28,22 @@ cd packages/aws-cdk-lib
 yarn watch
 ```
 
+Benefits:
+- Automatic incremental compilation on file changes
+- No manual yarn build needed between test runs
+- Faster feedback loop during development
+
 ### Step 2: Execute Module Unit Tests
 
 ```bash
 cd packages/aws-cdk-lib
 yarn test aws-<service>
 ```
+
+This validates:
+- Tests written by Implementation Specialist work correctly
+- Module-specific functionality behaves as expected
+- Module dependencies are intact
 
 Analyze results:
 - Record all test passes and failures
@@ -97,6 +61,11 @@ ls test/<module_name>/test/integ*.js
 # Run integration tests with snapshot updates
 yarn integ-runner --directory test/<module_name>/test/ --update-on-failed
 ```
+
+This validates:
+- CloudFormation template generation for the module
+- AWS service integration for the module
+- Module-specific deployment scenarios
 
 ### Step 4: Analyze and Report Failures
 
