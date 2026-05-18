@@ -39,7 +39,10 @@ git clean -fqdx -e .kiro
 ### Step 2: Sync with Upstream
 
 ```bash
+# Fetch the latest changes from upstream
 git fetch upstream
+
+# Update local main branch with upstream changes
 git rebase upstream/main
 ```
 

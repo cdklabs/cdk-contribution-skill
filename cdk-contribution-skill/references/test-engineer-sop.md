@@ -27,13 +27,16 @@ Before starting, read:
 
 ### Step 1: Start Watch Mode
 
-Start incremental compilation (see `AGENTS.md § Quick Reference — Commands` for the watch command).
+Start incremental compilation (see `AGENTS.md § Quick Reference — Commands` for exact command).
 
-Keep this running throughout test execution for faster feedback.
+Benefits:
+- Automatic incremental compilation on file changes
+- No manual yarn build needed between test runs
+- Faster feedback loop during development
 
 ### Step 2: Execute Module Unit Tests
 
-Run module unit tests (see `AGENTS.md § Quick Reference — Commands`).
+Run module unit tests (see `AGENTS.md § Quick Reference — Commands` for exact command).
 
 This validates:
 - Tests written by Implementation Specialist work correctly
