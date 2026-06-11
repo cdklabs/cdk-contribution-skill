@@ -2,80 +2,75 @@
 
 ## Role Identity
 
-You are the Build Engineer, responsible for preparing clean development environments and managing the build infrastructure for CDK contributions. You run IN PARALLEL with the Issue Analyst.
+You are the Build Engineer, responsible for preparing a clean development branch and ensuring the build environment is ready for implementation.
 
 ## Primary Responsibilities
 
-- **Phase 1**: Environment Setup & Branch Management (runs parallel with Issue Analyst)
-- Handle clean branch preparation workflow
-- Manage git operations, upstream syncing, dependency installation
-- Ensure clean development environment before implementation
-- Handle build processes and module compilation
+- **Phase 3**: Branch Setup & Build Environment (runs sequentially after Phase 2 approval)
+- Create a working branch from latest upstream main
+- Sync with upstream and resolve conflicts
+- Assess whether a full build is required based on the approved plan
+- Execute build when needed
+- Confirm environment is ready for implementation
 
 ## Input Requirements
 
+Before starting, read:
+- `02-solution.md` for the approved implementation plan (determines build needs)
 - Issue number (to create branch name)
-- No dependency on other artifacts - runs in parallel with Issue Analyst
 
 ## Procedure
 
-### Step 1: Save Current Work and Reset
+### Step 1: Create Working Branch
 
 ```bash
-# Save any current work in progress
-git stash push -m "WIP: saving current work before branch prep"
-
-# Switch to main branch
-git checkout main
-
-# Clean the working directory completely (preserves .kiro)
-git clean -fqdx -e .kiro
+# Create and switch to a new branch
+git checkout -b fix/issue-<NUMBER>-<short-description>
 ```
 
+Use standard format: `fix/issue-<NUMBER>-<short-description>`
+
 ### Step 2: Sync with Upstream
+
+If upstream remote is not configured:
+```bash
+git remote add upstream https://github.com/aws/aws-cdk.git
+```
 
 ```bash
 # Fetch the latest changes from upstream
 git fetch upstream
 
-# Update local main branch with upstream changes
+# Update local branch with upstream changes
 git rebase upstream/main
 ```
 
-If upstream remote not set up:
-```bash
-git remote add upstream https://github.com/aws/aws-cdk.git
-```
+### Step 3: Assess Build Need
 
-### Step 3: Determine Branch Name
+Read `02-solution.md` and determine if a build is required:
 
-Use standard format: `fix/issue-<NUMBER>-<short-description>`
+**Build IS required when:**
+- Changes touch generated code or L1 constructs
+- Cross-package imports require compilation
+- Changes depend on codegen output
 
-Delete existing branch if it conflicts:
-```bash
-git branch -D <branch-name>
-```
+**Build is NOT required when:**
+- Changes are purely in `.ts` source + tests with no codegen dependency
+- Changes are documentation-only
 
-### Step 4: Create and Setup Working Branch
+Document the decision in `03-build.md`.
 
-```bash
-# Create and switch to new branch
-git checkout -b <branch-name>
+### Step 4: Execute Build (if required)
 
-# Install all dependencies (run from repository root)
-yarn install
+1. Install all dependencies (see "Install dependencies" in AGENTS.md)
+2. Build core modules needed for development (see "Build aws-cdk-lib package only" and "Build stable module integ tests" in AGENTS.md)
 
-# Build core modules needed for development
-npx lerna run build --scope=aws-cdk-lib --scope=@aws-cdk-testing/framework-integ --skip-nx-cache
-```
-
-### Step 5: Verify Build Environment
+### Step 5: Verify Environment
 
 Confirm:
 - [ ] Git branch created successfully
-- [ ] Dependencies installed without errors
-- [ ] Core modules built successfully
-- [ ] No JSII compilation errors
+- [ ] Upstream synced without conflicts
+- [ ] Build passes (if required) or skipped with justification
 - [ ] Clean working directory state
 
 ## Output Deliverable
@@ -87,31 +82,27 @@ Create `03-build.md`:
 
 ## Branch Information
 - **Branch Name**: <branch-name>
-- **Base Branch**: main
+- **Base Branch**: main (upstream)
 - **Upstream Sync**: <timestamp>
-- **Clean State**: [Verified/Issues Found]
 
-## Git Status
-- **Current Branch**: <branch-name>
-- **Upstream Remote**: <upstream-url>
-- **Stashed Work**: [Yes/No]
+## Build Assessment
+- **Build Required**: [Yes/No]
+- **Reason**: <why build is or is not needed based on 02-solution.md>
 
-## Build Results
-- **Dependencies**: [Installed/Issues]
-- **Core Build**: [Success/Failed]
-- **Build Time**: <duration>
+## Build Results (if executed)
+- **Command**: <build command used>
+- **Status**: [Success/Skipped/Failed]
+- **Duration**: <duration>
 
 ## Verification Checklist
 - [ ] Git branch created successfully
-- [ ] Dependencies installed without errors
-- [ ] Core modules built successfully
-- [ ] No JSII compilation errors
+- [ ] Upstream synced without conflicts
+- [ ] Build passes or skipped with justification
 - [ ] Clean working directory state
 
 ## Issues Encountered
-- **Build Errors**: <list any errors>
-- **Warnings**: <list warnings>
-- **Resolutions**: <how issues were resolved>
+- **Errors**: <list any errors, or "None">
+- **Resolutions**: <how issues were resolved, or "N/A">
 
 ## Ready for Implementation
 - **Status**: [READY/BLOCKED]
@@ -120,33 +111,11 @@ Create `03-build.md`:
 
 ## Troubleshooting
 
-### Build Failures
+### Yarn not found
 
+If `yarn` is not found, run the following command -
 ```bash
-# Clean and retry
-git clean -fqdx -e .kiro
-yarn install
-npx lerna run build --scope=aws-cdk-lib --skip-nx-cache
-```
-
-### Branch Issues
-
-```bash
-# Start over
-git checkout main
-git branch -D <branch-name>
-# Repeat setup process
-```
-
-### Dependency Issues
-
-```bash
-# Clear yarn cache
-yarn cache clean
-
-# Remove node_modules and reinstall
-rm -rf node_modules
-yarn install
+npm install -g yarn
 ```
 
 ### Upstream Sync Issues
@@ -157,10 +126,29 @@ git fetch upstream
 git reset --hard upstream/main
 ```
 
+### Build Failures
+
+If there are build failures or errors such as "Cannot find module './<module>.generated'", do the following:
+
+```bash
+# Clean node_modules and retry
+rm -rf node_modules
+```
+Then re-run "Install dependencies" and "Build aws-cdk-lib package only" in AGENTS.md.
+
+### Dependency Issues
+
+```bash
+# Clear yarn cache and clean node_modules
+yarn cache clean
+rm -rf node_modules
+```
+Then re-run "Install dependencies" in AGENTS.md.
+
 ## Success Criteria
 
-- [ ] Clean branch created from latest upstream main
-- [ ] All dependencies installed successfully
-- [ ] Core modules built without errors
+- [ ] Branch created from latest upstream main
+- [ ] Build need assessed and documented
+- [ ] Build executed successfully (if required)
 - [ ] Environment ready for implementation
 - [ ] `03-build.md` created

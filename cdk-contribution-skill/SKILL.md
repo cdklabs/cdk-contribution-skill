@@ -9,8 +9,9 @@ Orchestrates specialized phases for AWS CDK contributions with human approval ga
 
 ## MANDATORY: Present Workflow Overview FIRST
 
-BEFORE doing ANY work, you MUST present the ASCII workflow diagram below, explain the process,
-and wait for confirmation. This is NON-NEGOTIABLE.
+BEFORE doing ANY work, you **MUST** present the ASCII workflow diagram below, explain the process,
+and wait for confirmation — because the user needs visibility into the multi-phase process and
+an opportunity to opt out before any work begins.
 
 Display this to the user:
 
@@ -31,8 +32,8 @@ I'll guide you through a structured process with human approval gates:
                      v
      +-------------------------------+
      |        ISSUE ANALYST          |
-     |  [subagent] Analyze issue,    |
-     |  classify type, explore code  |
+     |  Analyze issue, classify      |
+     |  type, explore code           |
      +---------------+---------------+
                      |
      +---------------+--------------+
@@ -42,8 +43,8 @@ I'll guide you through a structured process with human approval gates:
                      v
      +-------------------------------+
      |      SOLUTION ARCHITECT       |
-     |  [subagent] Propose solution, |
-     |  tests, and impl approach     |
+     |  Propose solution, tests,     |
+     |  and impl approach            |
      +---------------+---------------+
                      |
                      v
@@ -108,14 +109,14 @@ Key Points:
 Should we start? Yes | No
 ```
 
-STOP and wait for user response. Do NOT proceed until the user confirms.
+STOP and wait for user response. You **MUST NOT** proceed until the user confirms — because the user needs to understand the full workflow scope before committing to it.
 
 ---
 
 ## Reference Files
 
 **CRITICAL**: The reference files in the `references/` folder define the exact structure and content
-of each deliverable per phase. You MUST read the relevant reference file BEFORE executing each phase:
+of each deliverable per phase. You **MUST** read the relevant reference file BEFORE executing each phase:
 
 | SOP | Phase | Purpose |
 |-----|-------|---------|
@@ -130,26 +131,28 @@ of each deliverable per phase. You MUST read the relevant reference file BEFORE 
 | `regression-reviewer-sop.md` | 5 – Self Review | Regression review |
 | `review-report-generator-sop.md` | 5 – Self Review | Final review report synthesis |
 
-Supplementary references: `debug-ci.md`, `integ-testing.md`
+Supplementary references: `debug-ci.md` (use when debugging GitHub Actions CI failures)
+
+Refer to the **Quick Reference — Commands** table in `AGENTS.md` at the aws-cdk repo root for exact commands.
 
 ## Deliverables
 
-Each phase MUST write its output to markdown files under `.kiro/contributions/<ISSUE_NUMBER>/`:
+Each phase **MUST** write its output to markdown files under `.contributions/<ISSUE_NUMBER>/`:
 
 | Phase   | Output file                                                    |
 |---------|----------------------------------------------------------------|
-| Phase 1 | `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md`            |
-| Phase 2 | `.kiro/contributions/<ISSUE_NUMBER>/02-solution.md`            |
-| Phase 3 | `.kiro/contributions/<ISSUE_NUMBER>/03-build.md`               |
-| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/test-results.md`           |
-| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/quality-validation.md`     |
-| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/pr.md`                     |
-| Phase 4 | `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md`          |
-| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/security-review.md`        |
-| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/regression-review.md`      |
-| Phase 5 | `.kiro/contributions/<ISSUE_NUMBER>/05-review.md`              |
+| Phase 1 | `.contributions/<ISSUE_NUMBER>/01-analysis.md`            |
+| Phase 2 | `.contributions/<ISSUE_NUMBER>/02-solution.md`            |
+| Phase 3 | `.contributions/<ISSUE_NUMBER>/03-build.md`               |
+| Phase 4 | `.contributions/<ISSUE_NUMBER>/test-results.md`           |
+| Phase 4 | `.contributions/<ISSUE_NUMBER>/quality-validation.md`     |
+| Phase 4 | `.contributions/<ISSUE_NUMBER>/pr.md`                     |
+| Phase 4 | `.contributions/<ISSUE_NUMBER>/04-validation.md`          |
+| Phase 5 | `.contributions/<ISSUE_NUMBER>/security-review.md`        |
+| Phase 5 | `.contributions/<ISSUE_NUMBER>/regression-review.md`      |
+| Phase 5 | `.contributions/<ISSUE_NUMBER>/05-review.md`              |
 
-The subagent for each phase is responsible for writing its own deliverable file(s) before returning.
+Each phase is responsible for writing its own deliverable file(s) before completing.
 The orchestrator reads the file as the handoff input to the next phase.
 
 ### Deliverable ASCII Diagram Requirement
@@ -183,9 +186,9 @@ Use plain ASCII box-and-arrow style. No emoji. Example:
 ### When user says "Yes" to start:
 
 IMPORTANT: Phase 1 and Phase 2 are SEQUENTIAL — Phase 2 depends on Phase 1's output.
-Do NOT invoke them in parallel. Do NOT put them in the same subagent call.
+You **MUST NOT** run them in parallel — because Phase 2 requires the analysis deliverable from Phase 1.
 
-**Step A — Invoke Phase 1 subagent:**
+**Step A — Execute Phase 1 (Issue Analysis):**
 
 > **MANDATORY PRE-READ: Before executing this phase, you MUST read the instructions in `references/issue-analyst-sop.md`**
 > **Do NOT proceed until you have read the file and understand the required deliverables.**
@@ -200,22 +203,22 @@ Do NOT invoke them in parallel. Do NOT put them in the same subagent call.
 >    - `gh pr list --repo aws/aws-cdk --search "<issue number>" --json number,title,url` for linked PRs
 >
 > 2. FALLBACK - GitHub MCP server (only if gh CLI is unavailable or fails):
->    - Use MCP github tools with perPage: 3 to avoid token overflow
+>    - Use GitHub MCP tools with perPage: 3 to avoid token overflow
 >
 > Then explore the aws-cdk codebase to understand the affected module(s), existing patterns, test
 > conventions, and any related code. Classify the issue type (bug, feature, docs, etc.).
 > Produce a structured analysis: issue summary, affected files/modules, root cause or gap,
 > relevant CDK patterns observed, and any constraints or risks.
 >
-> Write your full analysis to `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md` before returning.
+> Write your full analysis to `.contributions/<ISSUE_NUMBER>/01-analysis.md` before returning.
 
 **Step B — WAIT for Phase 1 to complete, then read its output:**
 
-Read `.kiro/contributions/<ISSUE_NUMBER>/01-analysis.md` to confirm it was written successfully.
+Read `.contributions/<ISSUE_NUMBER>/01-analysis.md` to confirm it was written successfully.
 
-**Step C — Only AFTER Phase 1 is complete, invoke Phase 2 subagent:**
+**Step C — Only AFTER Phase 1 is complete, execute Phase 2 (Solution Planning):**
 
-Pass the content of `01-analysis.md` as `relevant_context` to the Phase 2 subagent:
+Pass the content of `01-analysis.md` as context to Phase 2:
 
 > **MANDATORY PRE-READ: Before executing this phase, you MUST read the instructions in `references/solution-architect-sop.md`**
 > **Do NOT proceed until you have read the file and understand the required deliverables.**
@@ -226,13 +229,13 @@ Pass the content of `01-analysis.md` as `relevant_context` to the Phase 2 subage
 > what scenario to cover), and any breaking change considerations. Be specific about CDK
 > patterns to follow.
 >
-> Write your full proposal to `.kiro/contributions/<ISSUE_NUMBER>/02-solution.md` before returning.
+> Write your full proposal to `.contributions/<ISSUE_NUMBER>/02-solution.md` before returning.
 
-Do NOT ask the user for input between Phase 1 and Phase 2 — proceed automatically.
+You **MUST NOT** ask the user for input between Phase 1 and Phase 2 — because the analysis-to-planning handoff is fully automated and interrupting it adds no value.
 
 ---
 
-### After both subagents complete, present this proposal to the user:
+### After both phases complete, present this proposal to the user:
 
 ```
 ISSUE AT A GLANCE
@@ -299,7 +302,7 @@ Continue with this plan? Yes | No | Something Else
 
 **STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
 
-You MUST read BOTH of these files before ANY other action in this phase:
+You **MUST** read BOTH of these files before ANY other action in this phase:
 1. `references/build-engineer-sop.md` - provides instructions for the build phase
 2. `references/implementation-specialist-sop.md` - provides instructions for the implementation phase
 
@@ -316,8 +319,8 @@ PHASE 3: BUILD & IMPLEMENTATION
 Here's what I'm about to do:
 
   1. Create local branch   fix/issue-<NUMBER>-<slug>
-  2. Sync with upstream    git fetch upstream && git rebase upstream/main
-  3. Assess build need     read 02-solution.md to decide if yarn build is required
+  2. Sync with upstream    fetch and rebase onto upstream/main
+  3. Assess build need     read 02-solution.md to decide if build is required
   4. Implement             apply all changes from the approved plan
 
 Kicking off now...
@@ -325,30 +328,27 @@ Kicking off now...
 
 Then proceed immediately without waiting for a response.
 
-Steps (in order, no skipping):
+Steps (in order, no skipping) — see `references/build-engineer-sop.md` for exact commands:
 
 1. Create a local PR branch named `fix/issue-<NUMBER>-<short-description>` from current HEAD
-2. Sync with upstream main:
-   - `git fetch upstream`
-   - `git rebase upstream/main`
-   - If no upstream remote exists: `git remote add upstream https://github.com/aws/aws-cdk.git` then fetch
+2. Sync with upstream main (add upstream remote if missing, then fetch and rebase)
 3. Assess whether a build is required:
    - Read `02-solution.md` — if changes touch generated code, L1 constructs, or cross-package
-     imports that require compilation, build the affected package(s) with `yarn build`
+     imports that require compilation, build the affected package(s)
    - If changes are purely in `.ts` source + tests with no codegen dependency, skip the build
      and go straight to implementation
    - Document the decision in `03-build.md`
 4. Implement all changes from the approved plan in `02-solution.md`.
-5. Write deliverable to `.kiro/contributions/<ISSUE_NUMBER>/03-build.md` (with ASCII diagram)
+5. Write deliverable to `.contributions/<ISSUE_NUMBER>/03-build.md` (with ASCII diagram)
 
 ### Phase 4: Parallel Validation
 
 **STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
 
-You MUST read ALL THREE of these files before ANY other action in this phase:
-1. `references/test-engineer-sop.md` - provides instructions for the testing subagent. Required deliverable: `test-results.md`.
-2. `references/quality-assurance-sop.md` - provides instructions for the QA subagent. Required deliverable: `quality-validation.md`
-3. `references/documentation-specialist-sop.md` - provides instructions for the documentation subagent. Required deliverable: `pr.md`
+You **MUST** read ALL THREE of these files before ANY other action in this phase:
+1. `references/test-engineer-sop.md` - provides instructions for the testing task. Required deliverable: `test-results.md`.
+2. `references/quality-assurance-sop.md` - provides instructions for the QA task. Required deliverable: `quality-validation.md`
+3. `references/documentation-specialist-sop.md` - provides instructions for the documentation task. Required deliverable: `pr.md`
 
 After reading, confirm you understand the required deliverables and procedures.
 
@@ -365,10 +365,10 @@ Here's what I'm about to do (all three run in parallel):
   +---------------------+   +------------------+   +------+
   |        TEST         |   |        QA        |   | DOCS |
   +---------------------+   +------------------+   +------+
-  | - Run unit tests    |   | yarn lint        |   | Check|
-  |   for affected pkgs |   | yarn build (tsc) |   | README|
-  | - Verify integ test |   | for affected     |   | needs|
-  |   files exist and   |   | packages         |   | update|
+  | - Run unit tests    |   | - Lint with fix  |   | Check|
+  |   for affected pkgs |   | - Build affected |   | README|
+  | - Verify integ test |   |   packages       |   | needs|
+  |   files exist and   |   |                  |   | update|
   |   are well-formed   |   |                  |   |      |
   | - Dry-run integ     |   |                  |   |      |
   |   snapshot check    |   |                  |   |      |
@@ -383,26 +383,26 @@ Kicking off now...
 
 Then proceed immediately without waiting for a response.
 
-Run all three as parallel subagents simultaneously. Do NOT wait for one to finish before starting the next.
+Run all three tasks in parallel. You **MUST NOT** wait for one to finish before starting the next — because they are independent and running them concurrently reduces wall-clock time.
 
-- TEST subagent:
+- TEST task (see `references/test-engineer-sop.md` for exact commands):
   - Run unit tests for all affected packages
   - Integ tests:
     1. Check if new or updated integ test files exist (compare against `02-solution.md` plan)
-    2. If YES — run `yarn integ-runner --update-on-failed` on those files to deploy and regenerate snapshots
-    3. If NO  — run `yarn integ-runner --update-on-failed` on the relevant module to confirm existing snapshots are intact and unchanged
-- QA checks (lint, build)
+    2. If YES — deploy and regenerate snapshots on those files
+    3. If NO  — run integ on the relevant module to confirm existing snapshots are intact
+- QA checks (see `references/quality-assurance-sop.md` for lint and build commands)
 - Documentation updates
 
-When all three subagents have succeeded, summarize the testing, QA and documentation details in `.kiro/contributions/<ISSUE_NUMBER>/04-validation.md`.
+When all three tasks have succeeded, summarize the testing, QA and documentation details in `.contributions/<ISSUE_NUMBER>/04-validation.md`.
 
 ### Phase 5: Self Review
 
 **STEP 0 — READ SOPs (non-negotiable, do this FIRST):**
 
-You MUST read ALL THREE of these files before ANY other action in this phase:
-1. `references/security-reviewer-sop.md` - provides instructions for the security review subagent. Required deliverable: `security-review.md`.
-2. `references/regression-reviewer-sop.md` - provides instructions for the regression review subagent. Required deliverable: `regression-review.md`
+You **MUST** read ALL THREE of these files before ANY other action in this phase:
+1. `references/security-reviewer-sop.md` - provides instructions for the security review task. Required deliverable: `security-review.md`.
+2. `references/regression-reviewer-sop.md` - provides instructions for the regression review task. Required deliverable: `regression-review.md`
 3. `references/review-report-generator-sop.md` - provides instructions for creating the final review report. Required deliverable: `05-review.md`
 
 After reading, confirm you understand the required deliverables and procedures.
@@ -441,9 +441,9 @@ Kicking off now...
 
 Then proceed immediately without waiting for a response.
 
-Run both as parallel subagents simultaneously. Do NOT wait for one to finish before starting the next.
+Run both tasks in parallel. You **MUST NOT** wait for one to finish before starting the next — because security and regression reviews are independent analyses.
 
-Synthesize findings into a go/no-go report in `.kiro/contributions/<ISSUE_NUMBER>/05-review.md` and present to user before PR submission.
+Synthesize findings into a go/no-go report in `.contributions/<ISSUE_NUMBER>/05-review.md` and present to user before PR submission.
 
 ### Phase 6: PR Submission
 
