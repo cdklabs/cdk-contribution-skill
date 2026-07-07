@@ -30,15 +30,9 @@ npx tsc --noEmit
 
 ### Step 2: Linting with Auto-fix
 
-```bash
-# Module-level linting
-cd packages/aws-cdk-lib/aws-<service>
-yarn lint --fix
-
-# Integration testing framework linting
-cd packages/@aws-cdk-testing/framework-integ
-yarn lint --fix
-```
+Run lint with auto-fix (see "Lint with auto-fix" in AGENTS.md) for both:
+- The affected module under `packages/aws-cdk-lib/aws-<service>`
+- The integration testing framework under `packages/@aws-cdk-testing/framework-integ`
 
 ### Step 3: Full Build Verification
 

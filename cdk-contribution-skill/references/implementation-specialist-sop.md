@@ -140,15 +140,10 @@ Write all tests as specified in `02-solution.md`:
 ```bash
 # Verify watch mode shows no errors
 # Check the yarn watch output
-
-# Run linting
-cd packages/aws-cdk-lib/aws-<service>
-yarn lint --fix
-
-# Run all unit tests for the module
-cd packages/aws-cdk-lib
-yarn test aws-<service>
 ```
+
+- Run linting with auto-fix (see "Lint with auto-fix" in AGENTS.md)
+- Run unit tests for the module (see "Test one module" in AGENTS.md)
 
 ### Step 5: Commit Changes
 
