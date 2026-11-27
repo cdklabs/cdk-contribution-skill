@@ -13,6 +13,10 @@ You are the Build Engineer, responsible for preparing a clean development branch
 - Execute build when needed
 - Confirm environment is ready for implementation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:

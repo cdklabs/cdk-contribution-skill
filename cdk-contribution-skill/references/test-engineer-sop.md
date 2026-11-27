@@ -13,6 +13,10 @@ You are the Test Engineer, responsible for executing tests written by the Implem
 - Report test results back to Implementation Specialist for fixes
 - Validate CloudFormation template generation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
@@ -23,10 +27,7 @@ Before starting, read:
 
 ### Step 1: Start Watch Mode
 
-```bash
-cd packages/aws-cdk-lib
-yarn watch
-```
+Start incremental compilation (see `AGENTS.md § Quick Reference — Commands` for exact command).
 
 Benefits:
 - Automatic incremental compilation on file changes

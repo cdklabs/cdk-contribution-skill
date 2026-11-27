@@ -12,6 +12,10 @@ You are the Quality Assurance Specialist, responsible for final validation and q
 - Validate no regressions in existing functionality
 - Perform final quality checks before PR generation
 
+## Prerequisites
+
+> **Prerequisite:** All construct design, naming, props, security, and testing standards are defined in `AGENTS.md`. Read relevant sections before executing this phase.
+
 ## Input Requirements
 
 Before starting, read:
