@@ -25,9 +25,25 @@ Before starting, read:
 
 ## Procedure
 
-### Step 1-3: Compilation, Linting, Build
+### Step 1: TypeScript Compilation Check
 
-See `AGENTS.md § Quick Reference — Commands` for tsc, lint, and build commands.
+```bash
+cd packages/aws-cdk-lib/aws-<service>
+npx tsc --noEmit
+```
+
+### Step 2: Linting with Auto-fix
+
+Run lint with auto-fix (see "Lint with auto-fix" in AGENTS.md) for both:
+- The affected module under `packages/aws-cdk-lib/aws-<service>`
+- The integration testing framework under `packages/@aws-cdk-testing/framework-integ`
+
+### Step 3: Full Build Verification
+
+```bash
+cd packages/aws-cdk-lib
+yarn build --fix
+```
 
 ### Step 4: Verify Success Criteria
 

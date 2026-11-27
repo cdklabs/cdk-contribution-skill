@@ -21,7 +21,7 @@ The skill implements an orchestrator pattern that:
 - Runs subagents in parallel where possible
 - Includes a human approval gate before implementation
 - Produces all PR artifacts (code changes, tests, documentation, changelog)
-- Writes structured deliverables to `.kiro/contributions/<ISSUE_NUMBER>/`
+- Writes structured deliverables to `.contributions/<ISSUE_NUMBER>/`
 - Automates the journey from "here's a GitHub issue" to "here's a ready-to-submit PR"
 
 ## What CDK Contribution Skill Is (and Isn't)
@@ -155,7 +155,7 @@ Security and Regression reviewers examine the changes, then synthesize findings 
 
 ## Deliverables
 
-Each phase writes its output to `.kiro/contributions/<ISSUE_NUMBER>/`:
+Each phase writes its output to `.contributions/<ISSUE_NUMBER>/`:
 
 | Phase | Output File |
 |-------|-------------|

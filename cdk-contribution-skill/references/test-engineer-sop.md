@@ -36,7 +36,7 @@ Benefits:
 
 ### Step 2: Execute Module Unit Tests
 
-Run module unit tests (see `AGENTS.md § Quick Reference — Commands` for exact command).
+Run unit tests for the affected module (see "Test one module" in AGENTS.md).
 
 This validates:
 - Tests written by Implementation Specialist work correctly
@@ -50,7 +50,18 @@ Analyze results:
 
 ### Step 3: Execute Integration Tests
 
-Run integ-runner (see `AGENTS.md § Quick Reference — Commands`).
+From `packages/@aws-cdk-testing/framework-integ`:
+
+```bash
+# List integration tests written by Implementation Specialist
+ls test/<module_name>/test/integ*.js
+
+# 1. Compile .ts to .js
+npx tsc --build tsconfig.json
+```
+
+2. Dry-run integ snapshots (see "Run integ snapshots in module" in AGENTS.md)
+3. Deploy and generate/update snapshots (see "Run integ with deploy" in AGENTS.md)
 
 This validates:
 - CloudFormation template generation for the module
@@ -128,13 +139,13 @@ Create `test-results.md`:
 - **Execution Date**: <date>
 
 ## Module Unit Test Results
-- **Command Executed**: `yarn test aws-<service>`
+- **Command Executed**: <"Test one module" command from AGENTS.md>
 - **Total Tests Run**: <number>
 - **Tests Passed**: <number>
 - **Tests Failed**: <number>
 
 ## Module Integration Test Results
-- **Command Executed**: `yarn integ-runner --directory test/<module>/test/ --update-on-failed`
+- **Command Executed**: <"Run integ with deploy" command from AGENTS.md>
 - **Integration Tests Found**: <list>
 - **Tests Run**: <list>
 - **Results**: <pass/fail for each>
@@ -177,24 +188,18 @@ Create `test-results.md`:
 
 ### Full Unit Test Suite (OPTIONAL)
 
-```bash
-# Run ALL unit tests across the entire aws-cdk repository
-npx lerna run test
-```
+Run all unit tests (see "Test all in package" in AGENTS.md).
 
-⚠️ Only run when:
+Only run when:
 - Explicitly requested by the user
 - Making changes to shared utilities or core functionality
 - Before final PR submission (if requested)
 
 ### Full Integration Test Suite (OPTIONAL)
 
-```bash
-# Run ALL integration tests
-yarn integ-runner --directory packages/@aws-cdk-testing/framework-integ --update-on-failed
-```
+Run all integration tests (see "Run all integ snapshots" in AGENTS.md).
 
-⚠️ Only run when:
+Only run when:
 - Explicitly requested by the user
 - Making breaking changes across multiple modules
 - Before final PR submission (if requested)
